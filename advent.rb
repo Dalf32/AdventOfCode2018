@@ -6,6 +6,8 @@
 # AUTHOR::  Kyle Mullins
 ##
 
+require 'benchmark'
+
 def format_day_num(day_num)
   format('%02i', day_num)
 end
@@ -14,7 +16,7 @@ def include_solutions
   # noinspection RubyResolve
   (1..25).each do |day_num|
     file = "Day#{format_day_num(day_num)}/solution.rb"
-    next unless File.exists?(file)
+    next unless File.exist?(file)
 
     load file
   end
@@ -47,7 +49,13 @@ def run_day_part(day_num, part_num, input_lines)
   part_class = Class.const_get("Day#{day_str}::Part#{part_num}").new
 
   puts "  Part #{part_num}"
-  puts "  -> #{part_class.solve(part_class.process_input(input_lines))}\n\n"
+
+  time = Benchmark.realtime do
+    puts "  -> #{part_class.solve(part_class.process_input(input_lines))}\n"
+  end
+
+  time_str = time < 1 ? "#{time * 1000}ms" : "#{time}s"
+  puts "    (#{time_str} elapsed)\n\n"
 end
 
 def run_single_day(day_num)
