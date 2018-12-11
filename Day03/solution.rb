@@ -9,10 +9,12 @@
 require_relative 'claim'
 
 module Day03
+  def process_input(input_lines)
+    input_lines.map { |claim_str| Claim.from_str(claim_str) }
+  end
+
   class Part1
-    def process_input(input_lines)
-      input_lines.map { |claim_str| Claim.from_str(claim_str) }
-    end
+    include Day03
 
     def solve(input)
       overlapping = []
@@ -35,9 +37,7 @@ module Day03
   end
 
   class Part2
-    def process_input(input_lines)
-      input_lines.map { |claim_str| Claim.from_str(claim_str) }
-    end
+    include Day03
 
     def solve(input)
       overlap_counts = input.map(&:id).zip([0] * input.count).to_h

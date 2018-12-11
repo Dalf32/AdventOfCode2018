@@ -7,10 +7,12 @@
 ##
 
 module Day02
+  def process_input(input_lines)
+    input_lines
+  end
+
   class Part1
-    def process_input(input_lines)
-      input_lines
-    end
+    include Day02
 
     def solve(input)
       has_2_count = 0
@@ -31,9 +33,7 @@ module Day02
   end
 
   class Part2
-    def process_input(input_lines)
-      input_lines
-    end
+    include Day02
 
     def solve(input)
       loop do

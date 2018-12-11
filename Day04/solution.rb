@@ -11,28 +11,30 @@ require_relative 'guard_record'
 require_relative 'guard_history'
 
 module Day04
-  class Part1
-    def process_input(input_lines)
-      sorted_records = input_lines.map do |record_str|
-        split_record = record_str.split(']')
-        [DateTime.parse(split_record.first[1..-1]), split_record.last]
-      end.sort_by(&:first)
+  def process_input(input_lines)
+    sorted_records = input_lines.map do |record_str|
+      split_record = record_str.split(']')
+      [DateTime.parse(split_record.first[1..-1]), split_record.last]
+    end.sort_by(&:first)
 
-      last_id = 0
+    last_id = 0
 
-      sorted_records.map do |(date, action_str)|
-        GuardRecord.from_parts(date, action_str, last_id).tap do |guard_record|
-          last_id = guard_record.id
-        end
+    guard_records = sorted_records.map do |(date, action_str)|
+      GuardRecord.from_parts(date, action_str, last_id).tap do |guard_record|
+        last_id = guard_record.id
       end
     end
 
-    def solve(input)
-      guards = input.group_by(&:id).map { |(id, records)| GuardHistory.new(id, records) }
+    guard_records.group_by(&:id).map { |(id, records)| GuardHistory.new(id, records) }
+  end
 
+  class Part1
+    include Day04
+
+    def solve(input)
       most_times_asleep = 0
       best_time = 0
-      sleepiest_guard = guards.max_by(&:minutes_asleep)
+      sleepiest_guard = input.max_by(&:minutes_asleep)
 
       (0..59).each do |minute|
         times_asleep = sleepiest_guard.times_asleep_at(minute)
@@ -47,29 +49,14 @@ module Day04
   end
 
   class Part2
-    def process_input(input_lines)
-      sorted_records = input_lines.map do |record_str|
-        split_record = record_str.split(']')
-        [DateTime.parse(split_record.first[1..-1]), split_record.last]
-      end.sort_by(&:first)
-
-      last_id = 0
-
-      sorted_records.map do |(date, action_str)|
-        GuardRecord.from_parts(date, action_str, last_id).tap do |guard_record|
-          last_id = guard_record.id
-        end
-      end
-    end
+    include Day04
 
     def solve(input)
-      guards = input.group_by(&:id).map { |(id, records)| GuardHistory.new(id, records) }
-
       most_times_asleep = 0
       best_time = 0
       sleepiest_guard = nil
 
-      guards.each do |guard|
+      input.each do |guard|
         (0..59).each do |minute|
           times_asleep = guard.times_asleep_at(minute)
           next unless times_asleep > most_times_asleep

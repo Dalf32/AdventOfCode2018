@@ -7,10 +7,12 @@
 ##
 
 module Day01
+  def process_input(input_lines)
+    input_lines.map(&:to_i)
+  end
+
   class Part1
-    def process_input(input_lines)
-      input_lines.map(&:to_i)
-    end
+    include Day01
 
     def solve(input)
       input.sum
@@ -18,9 +20,7 @@ module Day01
   end
 
   class Part2
-    def process_input(input_lines)
-      input_lines.map(&:to_i)
-    end
+    include Day01
 
     def solve(input)
       frequencies = [0]
