@@ -51,7 +51,7 @@ module Day07
         input -= ready_steps
 
         while steps_queue.any? && workers.any?(&:ready?)
-          step = steps_queue.delete_at(0)
+          step = steps_queue.shift
           workers.find(&:ready?).assign_task(step)
         end
 

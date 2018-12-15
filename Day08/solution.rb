@@ -14,13 +14,13 @@ module Day08
   end
 
   def create_node(data)
-    Node.new(data.delete_at(0), data.delete_at(0)).tap do |node|
+    Node.new(*data.shift(2)).tap do |node|
       node.child_node_count.times do
         node.add_child(create_node(data))
       end
 
       node.metadata_count.times do
-        node.add_metadata(data.delete_at(0))
+        node.add_metadata(data.shift)
       end
     end
   end
