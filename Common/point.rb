@@ -18,6 +18,14 @@ class Point
     @x.abs + @y.abs
   end
 
+  def manhattan_distance_from(other_point)
+    (@x - other_point.x).abs + (@y - other_point.y).abs
+  end
+
+  def distance_from(other_point)
+    Math.sqrt((other_point.x - @x)**2 + (other_point.y - @y)**2).to_i
+  end
+
   def in_bounds?(min, max)
     @x.between?(min, max) && @y.between?(min, max)
   end

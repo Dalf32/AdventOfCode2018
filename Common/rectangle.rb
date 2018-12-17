@@ -25,6 +25,18 @@ class Rectangle
     point.inside?(@top_left, @bottom_right)
   end
 
+  def width
+    (@top_left.x - @bottom_right.x).abs
+  end
+
+  def height
+    (@top_left.y - @bottom_right.y).abs
+  end
+
+  def area
+    width * height
+  end
+
   def overlapping_area(other_rect)
     new_top_left = Point.new([@top_left.x, other_rect.top_left.x].max,
                              [@top_left.y, other_rect.top_left.y].max)
